@@ -20,7 +20,7 @@ RUN chown -R www-data:www-data /var/log/apache2 /var/www/html
 WORKDIR /var/www/html
 RUN wget https://github.com/phppgadmin/phppgadmin/archive/master.zip
 RUN rm /var/www/html/index.html && unzip /var/www/html/master.zip
-RUN cp -R phppgadmin-master/* . && rm -r phppgadmin-master
+RUN cp -R phppgadmin-master/* . && rm -r phppgadmin-master && rm /var/www/html/master.zip
 
 ADD config.inc.php /var/www/html/conf/config.inc.php
 
