@@ -12,21 +12,21 @@ ENV APACHE_LOG_DIR /var/log/apache2
 ENV PORT=5432
 ENV HOST=database
 
-RUN ln -sf /dev/stdout /var/log/apache2/access.log
-RUN ln -sf /dev/stdout /var/log/apache2/error.log
-
-RUN chown -R www-data:www-data /var/log/apache2 /var/www/html
-
 WORKDIR /var/www/html
-RUN wget https://github.com/phppgadmin/phppgadmin/archive/master.zip
-RUN rm /var/www/html/index.html && unzip /var/www/html/master.zip
-RUN cp -R phppgadmin-master/* . && rm -r phppgadmin-master \
+
+RUN ln -sf /dev/stdout /var/log/apache2/access.log \
+  && ln -sf /dev/stdout /var/log/apache2/error.log \
+  && chown -R www-data:www-data /var/log/apache2 /var/www/html \
+  && wget https://github.com/phppgadmin/phppgadmin/archive/master.zip \
+  && rm /var/www/html/index.html && unzip /var/www/html/master.zip \
+  && cp -R phppgadmin-master/* . && rm -r phppgadmin-master \
   && rm /var/www/html/master.zip \
   && rm -rf /var/lib/apt/lists/*
 
 ADD config.inc.php /var/www/html/conf/config.inc.php
 
 ADD run.sh /run.sh
+
 RUN chmod -v +x /run.sh
 
 EXPOSE 80
