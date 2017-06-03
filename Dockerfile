@@ -4,14 +4,14 @@ MAINTAINER Pierre-Antoine 'ZHAJOR' Tible <antoinetible@gmail.com>
 
 ENV DEBIAN_FRONTEND=noninteractive
 # Add the PostgreSQL apt repository
-RUN echo '\
-deb http://apt.postgresql.org/pub/repos/apt/ jessie-pgdg main' >> /etc/apt/sources.list
-RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
-
-RUN apt-get update
-RUN apt-get upgrade
-RUN apt-get -y install apache2 libapache2-mod-php5 php5 php5-pgsql wget unzip postgresql-client-9.6
-RUN apt-get clean
+RUN apt-get update && \
+    apt-get -y install wget && \
+    wget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O - | apt-key add - && \
+    echo "deb http://apt.postgresql.org/pub/repos/apt/ jessie-pgdg main" >> /etc/apt/sources.list.d/pgdg.list && \
+    apt-get update && \
+    apt-get -y upgrade && \
+    apt-get -y install apache2 libapache2-mod-php5 php5 php5-pgsql unzip postgresql-client-9.6 && \
+    apt-get clean
 
 ENV APACHE_RUN_USER www-data
 ENV APACHE_RUN_GROUP www-data
